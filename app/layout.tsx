@@ -1,5 +1,7 @@
 import { Container } from '@/lib/mui';
 import '@/styles/global.css';
+import { Footer } from '@/widgets/footer/Footer';
+import { Header } from '@/widgets/header/Header';
 import { Metadata } from 'next';
 import { ABeeZee } from 'next/font/google';
 import './styles.css';
@@ -17,9 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en'>
       <body className={DEFAULT_FONT.className}>
         <div className={styles.layout}>
+          <Header />
           <Container maxWidth='md' className={styles.main}>
             {children}
           </Container>
+          <Footer />
         </div>
       </body>
     </html>
