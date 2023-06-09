@@ -14,8 +14,9 @@ export default function Home() {
   }, [values]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = +e.target.value;
+    let newValue = +e.target.value;
     if (isNaN(newValue)) return;
+    if (e.target.name === 'intervals') newValue = Math.min(newValue, 30);
     setValues((values) => ({
       ...values,
       [e.target.name]: newValue,

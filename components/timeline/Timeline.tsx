@@ -5,6 +5,7 @@ import { getTotalTime } from '@/helpers/getTotalTime';
 import { Fira_Sans_Extra_Condensed } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
 import { createIntervals } from '@/helpers/createRenderMap';
+import { getColor } from '@/helpers/getColor';
 
 type Timeline = {
   values: ITimeValues;
@@ -21,14 +22,22 @@ export function Timeline({ values }: Timeline) {
     setTimelineWidth(timelineRef.current.offsetWidth);
   }, []);
 
-  const oneSecondWidth = timelineWidth / totalTime;
+  const singleSecondWidth = timelineWidth / totalTime;
 
-  const prepareWidth = values.prepare * oneSecondWidth;
-  const trainWidth = values.train * oneSecondWidth;
-  const restWidth = values.rest * oneSecondWidth;
-  const intervalsWidth = values.intervals * oneSecondWidth;
+  const intervals = createIntervals(values, singleSecondWidth);
 
-  const intervals = createIntervals(values);
-
-  return <div ref={timelineRef}></div>;
+  return (
+    <div ref={timelineRef} className={styles.timeline_container}>
+      {intervals.map((interval) => (
+        <div
+          className={styles.block}
+          key={Math.random()}
+          style={{
+            width: interval.width,
+            background: getColor(interval.type),
+            height: 150,
+          }}></div>
+      ))}
+    </div>
+  );
 }

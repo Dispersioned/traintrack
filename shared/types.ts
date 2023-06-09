@@ -8,4 +8,5 @@ export type ITimeValues = {
 export type IInterval = {
   type: Omit<keyof ITimeValues, 'intervals'>;
   time: number;
+  width: number;
 };

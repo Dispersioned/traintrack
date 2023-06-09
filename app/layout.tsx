@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className={DEFAULT_FONT.className}>
           <div className={styles.layout}>
             <Header />
-            <Container maxWidth='md' className={styles.main}>
+            <Container maxWidth='lg' className={styles.main}>
               {children}
             </Container>
             <Footer />
