@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import { ABeeZee } from 'next/font/google';
 import './styles.css';
 import styles from './styles.module.scss';
+import { MUIThemeProvider } from '@/providers/ThemeProvider';
 
 const DEFAULT_FONT = ABeeZee({ subsets: ['latin'], weight: ['400'] });
 
@@ -16,16 +17,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en'>
-      <body className={DEFAULT_FONT.className}>
-        <div className={styles.layout}>
-          <Header />
-          <Container maxWidth='md' className={styles.main}>
-            {children}
-          </Container>
-          <Footer />
-        </div>
-      </body>
-    </html>
+    <MUIThemeProvider>
+      <html lang='en'>
+        <body className={DEFAULT_FONT.className}>
+          <div className={styles.layout}>
+            <Header />
+            <Container maxWidth='md' className={styles.main}>
+              {children}
+            </Container>
+            <Footer />
+          </div>
+        </body>
+      </html>
+    </MUIThemeProvider>
   );
 }
