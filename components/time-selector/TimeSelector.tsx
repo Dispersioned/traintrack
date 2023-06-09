@@ -1,3 +1,4 @@
+'use client';
 import { TextField } from '@/lib/mui';
 import { ITimeValues } from '@/shared/types';
 import styles from './styles.module.scss';

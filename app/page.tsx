@@ -5,8 +5,12 @@ import { loadValuesFromLocalStore } from '@/helpers/loadValuesFromLocalStore';
 import { saveValuesToLocalStore } from '@/helpers/saveValuesToLocalStore';
 import { useState, useEffect, ChangeEvent } from 'react';
 import styles from './styles.module.scss';
+import { Button, Typography } from '@/lib/mui';
+import { getTotalTime } from '@/helpers/getTotalTime';
 
 export default function Home() {
+  const [isRunning, setIsRunning] = useState(false);
+
   const [values, setValues] = useState(loadValuesFromLocalStore());
 
   useEffect(() => {
@@ -23,10 +27,19 @@ export default function Home() {
     }));
   };
 
+  function handleClick() {
+    setIsRunning((isRunning) => !isRunning);
+  }
+
   return (
     <div className={styles.content}>
       <Timeline values={values} />
       <TimeSelector values={values} onChange={onChange} />
+      <div>
+        <Button variant='contained' color={isRunning ? 'warning' : 'info'} onClick={handleClick}>
+          {isRunning ? 'pause' : 'start'}
+        </Button>
+      </div>
     </div>
   );
 }
