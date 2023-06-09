@@ -1,28 +1,14 @@
-'use client';
-import { loadValuesFromLocalStore } from '@/helpers/loadValuesFromLocalStore';
-import { saveValuesToLocalStore } from '@/helpers/saveValuesToLocalStore';
 import { TextField } from '@/lib/mui';
-import { ChangeEvent, PropsWithChildren, useEffect, useState } from 'react';
+import { ITimeValues } from '@/shared/types';
 import styles from './styles.module.scss';
+import { ChangeEvent } from 'react';
 
-type TimeSelectorProps = PropsWithChildren<{}>;
+type TimeSelectorProps = {
+  values: ITimeValues;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+};
 
-export function TimeSelector({}: TimeSelectorProps) {
-  const [values, setValues] = useState(loadValuesFromLocalStore());
-
-  useEffect(() => {
-    saveValuesToLocalStore(values);
-  }, [values]);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = +e.target.value;
-    if (isNaN(newValue)) return;
-    setValues((values) => ({
-      ...values,
-      [e.target.name]: newValue,
-    }));
-  };
-
+export function TimeSelector({ values, onChange }: TimeSelectorProps) {
   return (
     <div className={styles.wrapper}>
       <TextField label='Prepare' name='prepare' value={values.prepare} onChange={onChange} />
