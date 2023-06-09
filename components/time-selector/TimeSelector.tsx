@@ -1,34 +1,16 @@
 'use client';
-import { loadValuesFromLocalStore } from '@/helpers/loadValuesFromLocalStore';
-import { saveValuesToLocalStore } from '@/helpers/saveValuesToLocalStore';
 import { TextField } from '@/lib/mui';
-import { ChangeEvent, PropsWithChildren, useEffect, useState } from 'react';
+import { useTimingsStore } from '@/store/useTimingsStore';
 import styles from './styles.module.scss';
 
-type TimeSelectorProps = PropsWithChildren<{}>;
-
-export function TimeSelector({}: TimeSelectorProps) {
-  const [values, setValues] = useState(loadValuesFromLocalStore());
-
-  useEffect(() => {
-    saveValuesToLocalStore(values);
-  }, [values]);
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = +e.target.value;
-    if (isNaN(newValue)) return;
-    setValues((values) => ({
-      ...values,
-      [e.target.name]: newValue,
-    }));
-  };
-
+export function TimeSelector() {
+  const { prepare, train, rest, intervals, onChange } = useTimingsStore();
   return (
     <div className={styles.wrapper}>
-      <TextField label='Prepare' name='prepare' value={values.prepare} onChange={onChange} />
-      <TextField label='Train' name='train' value={values.train} onChange={onChange} />
-      <TextField label='Rest' name='rest' value={values.rest} onChange={onChange} />
-      <TextField label='Intervals' name='intervals' value={values.intervals} onChange={onChange} />
+      <TextField label='Prepare' name='prepare' value={prepare} onChange={onChange} />
+      <TextField label='Train' name='train' value={train} onChange={onChange} />
+      <TextField label='Rest' name='rest' value={rest} onChange={onChange} />
+      <TextField label='Intervals' name='intervals' value={intervals} onChange={onChange} />
     </div>
   );
 }

@@ -4,7 +4,10 @@
   gap: 15px;
 }
 
-.block {
+.timeline_container {
+  display: flex;
+}
+
+.interval {
   height: 150px;
-  border-right: 1px solid black;
 }
