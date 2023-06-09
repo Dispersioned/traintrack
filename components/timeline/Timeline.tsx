@@ -1,11 +1,9 @@
-import { TextField } from '@/lib/mui';
-import { ITimeValues } from '@/shared/types';
-import styles from './styles.module.scss';
-import { getTotalTime } from '@/helpers/getTotalTime';
-import { Fira_Sans_Extra_Condensed } from 'next/font/google';
-import { useEffect, useRef, useState } from 'react';
 import { createIntervals } from '@/helpers/createRenderMap';
 import { getColor } from '@/helpers/getColor';
+import { getTotalTime } from '@/helpers/getTotalTime';
+import { ITimeValues } from '@/shared/types';
+import { useEffect, useRef, useState } from 'react';
+import styles from './styles.module.scss';
 
 type Timeline = {
   values: ITimeValues;
@@ -24,18 +22,21 @@ export function Timeline({ values }: Timeline) {
 
   const singleSecondWidth = timelineWidth / totalTime;
 
+  console.log('timelineWidth :>> ', timelineWidth);
+  console.log('totalTime', totalTime);
+  console.log('singleSecondWidth', singleSecondWidth);
+
   const intervals = createIntervals(values, singleSecondWidth);
 
   return (
     <div ref={timelineRef} className={styles.timeline_container}>
       {intervals.map((interval) => (
         <div
-          className={styles.block}
+          className={styles.interval}
           key={Math.random()}
           style={{
             width: interval.width,
             background: getColor(interval.type),
-            height: 150,
           }}></div>
       ))}
     </div>
