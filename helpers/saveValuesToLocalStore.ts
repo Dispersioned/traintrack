@@ -1,3 +1,4 @@
+'use client';
 import { INTERVALS_KEY, PREPARE_KEY, REST_KEY, TRAIN_KEY } from '@/shared/config/storageKeys';
 import { ITimeValues } from '@/shared/types';
 
