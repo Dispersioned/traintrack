@@ -1,5 +1,5 @@
-'use client'
-import { theme } from '@/styles/theme';
+'use client';
+import { theme } from '@/shared/theme';
 import { ThemeProvider } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
