@@ -1,8 +1,10 @@
 'use client';
 import { TimeSelector } from '@/components/time-selector';
+import { Timeline } from '@/components/timeline';
 import { loadValuesFromLocalStore } from '@/helpers/loadValuesFromLocalStore';
 import { saveValuesToLocalStore } from '@/helpers/saveValuesToLocalStore';
 import { useState, useEffect, ChangeEvent } from 'react';
+import styles from './styles.module.scss';
 
 export default function Home() {
   const [values, setValues] = useState(loadValuesFromLocalStore());
@@ -21,7 +23,8 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className={styles.content}>
+      <Timeline values={values} />
       <TimeSelector values={values} onChange={onChange} />
     </div>
   );

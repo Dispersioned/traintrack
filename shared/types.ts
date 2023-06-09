@@ -4,3 +4,8 @@ export type ITimeValues = {
   rest: number;
   intervals: number;
 };
+
+export type IInterval = {
+  type: Omit<keyof ITimeValues, 'intervals'>;
+  time: number;
+};
