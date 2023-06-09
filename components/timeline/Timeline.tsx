@@ -1,13 +1,15 @@
 import { createIntervals } from '@/helpers/createRenderMap';
 import { getColor } from '@/helpers/getColor';
 import { getTotalTime } from '@/helpers/getTotalTime';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import { useTimingsStore } from '@/store/useTimingsStore';
 import { useHasHydrated } from '@/hooks/useHasHydrated';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Typography } from '@mui/material';
+import { useTrainStore } from '@/store/useTrainStore';
+import { calcBoundaries } from '@/helpers/calcBoundaries';
 
-export function Timeline() {
+export const Timeline = memo(function Timeline() {
   const hasHydrated = useHasHydrated();
   const { prepare, train, rest, intervals } = useTimingsStore();
 
@@ -26,6 +28,15 @@ export function Timeline() {
     return createIntervals(values, singleSecondWidth);
   }, [prepare, train, rest, intervals, timelineWidth]);
 
+  const setBoundaries = useTrainStore((state) => state.setBoundaries);
+
+  useEffect(() => {
+    if (blockIntervals) setBoundaries(calcBoundaries(blockIntervals));
+  }, [blockIntervals, setBoundaries]);
+
+  const isRunning = useTrainStore((state) => state.isRunning);
+  const currentType = useTrainStore((state) => state.currentType);
+
   return (
     <div ref={timelineRef}>
       {hasHydrated ? (
@@ -43,6 +54,7 @@ export function Timeline() {
       ) : (
         <Skeleton variant='rounded' width='100%' height={150}></Skeleton>
       )}
+      {isRunning && <Typography>{currentType}</Typography>}
     </div>
   );
-}
+});

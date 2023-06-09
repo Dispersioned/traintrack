@@ -10,3 +10,8 @@ export type IInterval = {
   time: number;
   width: number;
 };
+
+export type IBoundary = {
+  type: Omit<keyof ITimings, 'intervals'>;
+  startTime: number;
+};

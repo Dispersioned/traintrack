@@ -8,15 +8,22 @@ import { useTimingsStore } from '@/store/useTimingsStore';
 import { useState } from 'react';
 import styles from './styles.module.scss';
 import { TrainButton } from '@/components/train-button';
+import { useTrainStore } from '@/store/useTrainStore';
 
 export default function Home() {
   const hasHydrated = useHasHydrated();
   const { total } = useTimingsStore();
 
+  const isRunning = useTrainStore((state) => state.isRunning);
+  const elapsedMs = useTrainStore((state) => state.elapsedMs);
+  const elapsedSeconds = Math.floor(elapsedMs / 1000);
+
   return (
     <div className={styles.content}>
       {hasHydrated ? (
-        <Typography variant='h2'>{formatTime(total())}</Typography>
+        <Typography variant='h2'>
+          {isRunning ? `${formatTime(elapsedSeconds)}:${formatTime(total())}` : formatTime(total())}
+        </Typography>
       ) : (
         <Typography variant='h2'>
           <Skeleton width={100}></Skeleton>
