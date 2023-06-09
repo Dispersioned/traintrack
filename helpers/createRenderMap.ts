@@ -1,6 +1,6 @@
-import { IInterval, ITimeValues } from '@/shared/types';
+import { IInterval, ITimings } from '@/shared/types';
 
-export function createIntervals(values: ITimeValues, singleSecondWidth: number) {
+export function createIntervals(values: ITimings, singleSecondWidth: number) {
   const prepareWidth = values.prepare * singleSecondWidth;
   const trainWidth = values.train * singleSecondWidth;
   const restWidth = values.rest * singleSecondWidth;

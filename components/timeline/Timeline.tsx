@@ -1,16 +1,16 @@
 import { createIntervals } from '@/helpers/createRenderMap';
 import { getColor } from '@/helpers/getColor';
 import { getTotalTime } from '@/helpers/getTotalTime';
-import { ITimeValues } from '@/shared/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.scss';
-import { Button } from '@mui/material';
+import { useTimingsStore } from '@/store/useTimingsStore';
+import { useHasHydrated } from '@/hooks/useHasHydrated';
+import { Skeleton } from '@mui/material';
 
-type Timeline = {
-  values: ITimeValues;
-};
+export function Timeline() {
+  const hasHydrated = useHasHydrated();
+  const { prepare, train, rest, intervals } = useTimingsStore();
 
-export function Timeline({ values }: Timeline) {
   const timelineRef = useRef<HTMLDivElement>(null);
   const [timelineWidth, setTimelineWidth] = useState(0);
 
@@ -19,25 +19,30 @@ export function Timeline({ values }: Timeline) {
     setTimelineWidth(timelineRef.current.offsetWidth);
   }, []);
 
-  const intervals = useMemo(() => {
+  const blockIntervals = useMemo(() => {
+    const values = { prepare, train, rest, intervals };
     const totalTime = getTotalTime(values);
     const singleSecondWidth = timelineWidth / totalTime;
     return createIntervals(values, singleSecondWidth);
-  }, [values, timelineWidth]);
+  }, [prepare, train, rest, intervals, timelineWidth]);
 
   return (
-    <div>
-      <div ref={timelineRef} className={styles.timeline_container}>
-        {intervals.map((interval) => (
-          <div
-            className={styles.interval}
-            key={Math.random()}
-            style={{
-              width: interval.width,
-              background: getColor(interval.type),
-            }}></div>
-        ))}
-      </div>
+    <div ref={timelineRef}>
+      {hasHydrated ? (
+        <div className={styles.timeline_container}>
+          {blockIntervals.map((interval) => (
+            <div
+              className={styles.interval}
+              key={Math.random()}
+              style={{
+                width: interval.width,
+                background: getColor(interval.type),
+              }}></div>
+          ))}
+        </div>
+      ) : (
+        <Skeleton variant='rounded' width='100%' height={150}></Skeleton>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export type ITimeValues = {
+export type ITimings = {
   prepare: number;
   train: number;
   rest: number;
@@ -6,7 +6,7 @@ export type ITimeValues = {
 };
 
 export type IInterval = {
-  type: Omit<keyof ITimeValues, 'intervals'>;
+  type: Omit<keyof ITimings, 'intervals'>;
   time: number;
   width: number;
 };

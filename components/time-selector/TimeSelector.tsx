@@ -1,21 +1,16 @@
 'use client';
 import { TextField } from '@/lib/mui';
-import { ITimeValues } from '@/shared/types';
+import { useTimingsStore } from '@/store/useTimingsStore';
 import styles from './styles.module.scss';
-import { ChangeEvent } from 'react';
 
-type TimeSelectorProps = {
-  values: ITimeValues;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
-
-export function TimeSelector({ values, onChange }: TimeSelectorProps) {
+export function TimeSelector() {
+  const { prepare, train, rest, intervals, onChange } = useTimingsStore();
   return (
     <div className={styles.wrapper}>
-      <TextField label='Prepare' name='prepare' value={values.prepare} onChange={onChange} />
-      <TextField label='Train' name='train' value={values.train} onChange={onChange} />
-      <TextField label='Rest' name='rest' value={values.rest} onChange={onChange} />
-      <TextField label='Intervals' name='intervals' value={values.intervals} onChange={onChange} />
+      <TextField label='Prepare' name='prepare' value={prepare} onChange={onChange} />
+      <TextField label='Train' name='train' value={train} onChange={onChange} />
+      <TextField label='Rest' name='rest' value={rest} onChange={onChange} />
+      <TextField label='Intervals' name='intervals' value={intervals} onChange={onChange} />
     </div>
   );
 }
