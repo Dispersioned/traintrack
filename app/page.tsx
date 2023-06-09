@@ -7,15 +7,11 @@ import { Button, Skeleton, Typography } from '@/lib/mui';
 import { useTimingsStore } from '@/store/useTimingsStore';
 import { useState } from 'react';
 import styles from './styles.module.scss';
+import { TrainButton } from '@/components/train-button';
 
 export default function Home() {
   const hasHydrated = useHasHydrated();
   const { total } = useTimingsStore();
-  const [isRunning, setIsRunning] = useState(false);
-
-  function handleClick() {
-    setIsRunning((isRunning) => !isRunning);
-  }
 
   return (
     <div className={styles.content}>
@@ -29,9 +25,7 @@ export default function Home() {
       <Timeline />
       <TimeSelector />
       <div>
-        <Button variant='contained' color={isRunning ? 'warning' : 'info'} onClick={handleClick}>
-          {isRunning ? 'pause' : 'start'}
-        </Button>
+        <TrainButton />
       </div>
     </div>
   );
