@@ -12,6 +12,7 @@ export default function Home() {
   const [isRunning, setIsRunning] = useState(false);
 
   const [values, setValues] = useState(loadValuesFromLocalStore());
+  const totalTime = getTotalTime(values);
 
   useEffect(() => {
     saveValuesToLocalStore(values);
@@ -33,6 +34,7 @@ export default function Home() {
 
   return (
     <div className={styles.content}>
+      <Typography>Total: {totalTime}</Typography>
       <Timeline values={values} />
       <TimeSelector values={values} onChange={onChange} />
       <div>
