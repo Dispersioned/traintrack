@@ -9,6 +9,7 @@ import { Skeleton, Typography } from '@/lib/mui';
 import { useTimingsStore } from '@/store/useTimingsStore';
 import { useTrainStore } from '@/store/useTrainStore';
 import styles from './styles.module.scss';
+import { getColor } from '@/helpers/getColor';
 
 export default function Home() {
   const hasHydrated = useHasHydrated();
@@ -16,14 +17,22 @@ export default function Home() {
 
   const isRunning = useTrainStore((state) => state.isRunning);
   const elapsedMs = useTrainStore((state) => state.elapsedMs);
+  const currentType = useTrainStore((state) => state.currentType);
   const elapsedSeconds = Math.floor(elapsedMs / 1000);
 
   return (
     <div className={styles.content}>
       {hasHydrated ? (
-        <Typography variant='h2'>
-          {isRunning ? `${formatTime(elapsedSeconds)} / ${formatTime(total())}` : formatTime(total())}
-        </Typography>
+        <>
+          {isRunning && (
+            <Typography variant='h1' style={{ background: '#000', color: getColor(currentType), padding: '5px 20px' }}>
+              {currentType}
+            </Typography>
+          )}
+          <Typography variant='h2'>
+            {isRunning ? `${formatTime(elapsedSeconds)} / ${formatTime(total())}` : formatTime(total())}
+          </Typography>
+        </>
       ) : (
         <Typography variant='h2'>
           <Skeleton width={100}></Skeleton>
