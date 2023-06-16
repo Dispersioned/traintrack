@@ -29,20 +29,20 @@ export function TrainButton() {
   }, [reset, stopRunning, toggleRunning, isRunning]);
 
   return (
-    <Box display='flex' gap={4}>
+    <Box display='flex' flexDirection='column' alignItems='center' gap={2}>
       <Typography variant='h4'>
         Press{' '}
         <b>
           <i>SPACE</i>
         </b>{' '}
-        to toggle training
+        to start / stop
       </Typography>
       <Typography variant='h4'>
         Press{' '}
         <b>
           <i>R</i>
         </b>{' '}
-        to toggle training
+        to reset
       </Typography>
     </Box>
   );
