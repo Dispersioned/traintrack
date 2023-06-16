@@ -30,14 +30,14 @@ export function TrainButton() {
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' gap={2}>
-      <Typography variant='h4'>
+      <Typography variant='h5'>
         Press{' '}
         <b>
           <i>SPACE</i>
         </b>{' '}
         to start / stop
       </Typography>
-      <Typography variant='h4'>
+      <Typography variant='h5'>
         Press{' '}
         <b>
           <i>R</i>

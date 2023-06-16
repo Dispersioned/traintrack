@@ -1,4 +1,5 @@
 'use client';
+import { BackgroundTint } from '@/components/background-tint';
 import { TimeSelector } from '@/components/time-selector';
 import { Timeline } from '@/components/timeline';
 import { TrainButton } from '@/components/train-button';
@@ -33,6 +34,7 @@ export default function Home() {
       <div>
         <TrainButton />
       </div>
+      <BackgroundTint />
     </div>
   );
 }

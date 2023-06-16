@@ -1,5 +1,5 @@
 'use client';
-import { IBoundary, ITimings } from '@/shared/types';
+import { IBoundary, IIntervalType } from '@/shared/types';
 import { create } from 'zustand';
 
 type TrainStore = {
@@ -7,7 +7,7 @@ type TrainStore = {
   isRunning: boolean;
   boundaries: IBoundary[];
   elapsedMs: number;
-  currentType: Omit<keyof ITimings, 'intervals'>;
+  currentType: IIntervalType;
   toggleRunning: () => void;
   setBoundaries: (blocks: IBoundary[]) => void;
   startRunning: () => void;

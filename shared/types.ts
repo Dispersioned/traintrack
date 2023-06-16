@@ -5,14 +5,16 @@ export type ITimings = {
   intervals: number;
 };
 
+export type IIntervalType = Omit<keyof ITimings, 'intervals'>;
+
 export type IInterval = {
-  type: Omit<keyof ITimings, 'intervals'>;
+  type: IIntervalType;
   time: number;
   width: number;
 };
 
 export type IBoundary = {
-  type: Omit<keyof ITimings, 'intervals'>;
+  type: IIntervalType;
   startTime: number;
   duration: number;
 };
