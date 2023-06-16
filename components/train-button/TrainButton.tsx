@@ -1,22 +1,49 @@
-import { Button } from '@/lib/mui';
-import styles from './styles.module.scss';
+import { Box, Typography } from '@/lib/mui';
 import { useTrainStore } from '@/store/useTrainStore';
-import { useHasHydrated } from '@/hooks/useHasHydrated';
+import { useEffect } from 'react';
 
 export function TrainButton() {
-  const hasHydrated = useHasHydrated();
-
   const isRunning = useTrainStore((state) => state.isRunning);
   const toggleRunning = useTrainStore((state) => state.toggleRunning);
+  const stopRunning = useTrainStore((state) => state.stopRunning);
+  const reset = useTrainStore((state) => state.reset);
+
+  useEffect(() => {
+    function keyListener(e: KeyboardEvent) {
+      switch (e.key) {
+        case ' ':
+          toggleRunning();
+          break;
+        case 'r':
+          stopRunning();
+          reset();
+          break;
+      }
+    }
+
+    document.addEventListener('keypress', keyListener);
+
+    return () => {
+      document.removeEventListener('keypress', keyListener);
+    };
+  }, [reset, stopRunning, toggleRunning, isRunning]);
 
   return (
-    <Button
-      className={styles.button}
-      variant='contained'
-      color={isRunning ? 'warning' : 'info'}
-      onClick={toggleRunning}
-      disabled={!hasHydrated}>
-      {isRunning ? 'pause' : 'start'}
-    </Button>
+    <Box display='flex' gap={4}>
+      <Typography variant='h4'>
+        Press{' '}
+        <b>
+          <i>SPACE</i>
+        </b>{' '}
+        to toggle training
+      </Typography>
+      <Typography variant='h4'>
+        Press{' '}
+        <b>
+          <i>R</i>
+        </b>{' '}
+        to toggle training
+      </Typography>
+    </Box>
   );
 }

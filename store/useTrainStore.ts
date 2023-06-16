@@ -62,6 +62,7 @@ export const useTrainStore = create<TrainStore>()((set, get) => ({
   },
   toggleRunning: () => {
     const { isRunning } = get();
+    console.log('isRunning', isRunning);
     if (isRunning) {
       get().stopRunning();
     } else {

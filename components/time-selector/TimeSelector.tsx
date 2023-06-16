@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 
 export function TimeSelector() {
   const { prepare, train, rest, intervals, onChange } = useTimingsStore();
+
   return (
     <div className={styles.wrapper}>
       <TextField label='Prepare' name='prepare' value={prepare} onChange={onChange} />
