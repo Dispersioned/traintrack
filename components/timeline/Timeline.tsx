@@ -18,6 +18,7 @@ export const Timeline = memo(function Timeline() {
 
   useEffect(() => {
     if (!timelineRef.current) return;
+    console.log('timelineRef.current.offsetWidth', timelineRef.current.offsetWidth);
     setTimelineWidth(timelineRef.current.offsetWidth);
   }, []);
 
@@ -38,7 +39,7 @@ export const Timeline = memo(function Timeline() {
   const currentType = useTrainStore((state) => state.currentType);
 
   return (
-    <div ref={timelineRef}>
+    <div ref={timelineRef} className={styles.timeline}>
       {hasHydrated ? (
         <div className={styles.timeline_container}>
           {blockIntervals.map((interval) => (

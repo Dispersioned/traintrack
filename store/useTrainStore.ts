@@ -1,7 +1,6 @@
 'use client';
-import { create } from 'zustand';
-import { useTimingsStore } from './useTimingsStore';
 import { IBoundary, ITimings } from '@/shared/types';
+import { create } from 'zustand';
 
 type TrainStore = {
   intervalId: NodeJS.Timer | null;
@@ -11,6 +10,9 @@ type TrainStore = {
   currentType: Omit<keyof ITimings, 'intervals'>;
   toggleRunning: () => void;
   setBoundaries: (blocks: IBoundary[]) => void;
+  startRunning: () => void;
+  stopRunning: () => void;
+  reset: () => void;
 };
 
 export const useTrainStore = create<TrainStore>()((set, get) => ({
@@ -20,48 +22,54 @@ export const useTrainStore = create<TrainStore>()((set, get) => ({
   elapsedMs: 0,
   currentType: 'prepare',
   startRunning: () => {
-    const { isRunning } = get();
+    const { boundaries } = get();
     const intervalId = setInterval(() => {
-      const { boundaries, elapsedMs } = get();
+      const { elapsedMs } = get();
+      const elapsedSeconds = Math.floor(elapsedMs / 1000);
 
-      function findCurrentType(boundaries: IBoundary[], elapsedMs: number) {
-        const elapsedSeconds = Math.floor(elapsedMs / 1000);
-
-        for (let i = 0; i < boundaries.length - 1; i++) {
-          const currentBoundary = boundaries[i];
+      function findCurrentType(boundaries: IBoundary[], elapsedSeconds: number) {
+        for (let i = 0; i < boundaries.length; i++) {
+          const boundary = boundaries[i];
           const nextBoundary = boundaries[i + 1];
-          if (elapsedSeconds >= currentBoundary.startTime && nextBoundary.startTime > elapsedSeconds) {
-            return currentBoundary.type;
+
+          if (nextBoundary) {
+            if (elapsedSeconds >= boundary.startTime && nextBoundary.startTime > elapsedSeconds) {
+              return boundary.type;
+            }
+          } else {
+            if (boundary.startTime + boundary.duration >= elapsedSeconds) {
+              return boundary.type;
+            }
           }
         }
+        return null;
+      }
 
-        // end of the training and restart
-        set({ elapsedMs: 0, currentType: 'prepare' });
+      const newCurrentType = findCurrentType(boundaries, elapsedSeconds);
+      if (newCurrentType) {
+        set({ elapsedMs: elapsedMs + 16, currentType: newCurrentType });
+      } else {
         get().stopRunning();
         get().reset();
       }
-
-      const newCurrentType = findCurrentType(boundaries, elapsedMs);
-
-      set({ elapsedMs: elapsedMs + 16, currentType: newCurrentType });
     }, 16);
     set({ isRunning: true, intervalId });
   },
-  reset: () => {
-    set({ elapsedMs: 0, currentType: 'prepare' });
-  },
   stopRunning: () => {
-    const { isRunning, intervalId } = get();
-    clearInterval(intervalId!);
-    set({ isRunning: false });
+    const { intervalId } = get();
+    if (intervalId) clearInterval(intervalId);
+    set({ isRunning: false, intervalId: null });
   },
   toggleRunning: () => {
-    const { isRunning, intervalId } = get();
+    const { isRunning } = get();
     if (isRunning) {
       get().stopRunning();
     } else {
       get().startRunning();
     }
+  },
+  reset: () => {
+    set({ elapsedMs: 0, currentType: 'prepare' });
   },
   setBoundaries: (boundaries) => {
     set({ boundaries });

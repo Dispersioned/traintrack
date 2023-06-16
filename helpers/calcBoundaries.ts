@@ -8,6 +8,7 @@ export function calcBoundaries(blocks: IInterval[]) {
     boundaries.push({
       type: block.type,
       startTime,
+      duration: block.time,
     });
     startTime += block.time;
   });

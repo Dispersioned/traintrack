@@ -14,4 +14,5 @@ export type IInterval = {
 export type IBoundary = {
   type: Omit<keyof ITimings, 'intervals'>;
   startTime: number;
+  duration: number;
 };
