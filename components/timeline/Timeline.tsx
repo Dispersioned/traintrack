@@ -17,9 +17,15 @@ export const Timeline = memo(function Timeline() {
   const [timelineWidth, setTimelineWidth] = useState(0);
 
   useEffect(() => {
-    if (!timelineRef.current) return;
-    console.log('timelineRef.current.offsetWidth', timelineRef.current.offsetWidth);
-    setTimelineWidth(timelineRef.current.offsetWidth);
+    function calcTimelineWidth() {
+      console.log('tick');
+      if (!timelineRef.current) return;
+      setTimelineWidth(timelineRef.current.offsetWidth);
+    }
+
+    calcTimelineWidth();
+    window.addEventListener('resize', calcTimelineWidth);
+    return () => window.addEventListener('resize', calcTimelineWidth);
   }, []);
 
   const blockIntervals = useMemo(() => {
